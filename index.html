@@ -86,7 +86,7 @@
     };
 
     let currentPage = 'login';
-    let selectedCity = defaultConfig.default_city;
+    let selectedCity = defaultConfig.default_city.toLowerCase();
     let selectedStore = null;
     let selectedAudit = null;
     let isLoggedIn = false;
@@ -135,7 +135,9 @@ function transformSheetData() {
     const storeName = String(row["Store Name"] || "").trim();
     if (!storeName) return;
 
-    const city = String(row["City"] || "Unknown").trim();
+    const city = String(row["City"] || defaultConfig.default_city)
+      .trim()
+      .toLowerCase();
 
     // Track cities
     if (!mockData.cities.includes(city)) {
@@ -368,7 +370,12 @@ ${row["Training Focus for this store:"] || "-"}
                   style="background: rgba(255, 255, 255, 0.1);"
                   onchange="handleCityChange(this.value)"
                 >
-                  ${mockData.cities.map(city => `<option value="${city}" ${city === selectedCity ? 'selected' : ''}>${city}</option>`).join('')}
+                  ${mockData.cities.map(city => {
+                    const isSelected = city.toLowerCase() === selectedCity.toLowerCase();
+                    const label = city.charAt(0).toUpperCase() + city.slice(1);
+
+                    return `<option value="${city}" ${isSelected ? 'selected' : ''}>${label}</option>`;
+                  }).join('')}
                 </select>
                 
                 ${currentUser && currentUser.canEdit ? `
