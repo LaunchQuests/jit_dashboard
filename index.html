@@ -118,7 +118,29 @@ async function fetchSheetData() {
     }
 
     liveSheetData = json.data || [];
-    transformSheetData();
+    function getValue(row, key) {
+      if (!row) return null;
+
+      const normalizedKey = key.replace(/\s+/g, ' ').trim();
+
+      const foundKey = Object.keys(row).find(
+        k => k.replace(/\s+/g, ' ').trim() === normalizedKey
+      );
+
+      return foundKey ? row[foundKey] : null;
+    }
+
+    function yesNoToScore(value) {
+      if (typeof value === 'number') return value;
+      if (!value) return NaN;
+
+      const v = value.toString().toLowerCase();
+      if (v.includes('yes')) return 5;
+      if (v.includes('no')) return 1;
+      return NaN;
+    }
+
+    transformSheetData(); 
     render();
   } catch (err) {
     console.error("Failed to fetch sheet data", err);
@@ -211,12 +233,12 @@ function transformSheetData() {
       knowledge,
 
       comments: `
-What impressed:
-${row["What impressed you most?"] || "-"}
+        What impressed:
+        ${row["What impressed you most?"] || "-"}
 
-Training focus:
-${row["Training Focus for this store:"] || "-"}
-      `.trim()
+      Training focus:
+        ${row["Training Focus for this store:"] || "-"}
+        `.trim()
     });
   });
 
