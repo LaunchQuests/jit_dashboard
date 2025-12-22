@@ -189,7 +189,8 @@ function transformSheetData() {
       row["Showcases clean"],
       row["Watches aligned"],
       row["Price tags visible"],
-      row["Watch Handling Overall Hygiene"]
+      row["Watch Handling"],
+      row["Overall Hygiene"]
     ].map(Number).filter(v => !isNaN(v));
 
     const hygiene = hygieneScores.length
@@ -199,7 +200,9 @@ function transformSheetData() {
     // Behaviour score
     const behaviorScores = [
       row["Greeted within 5 seconds"],
-      row["Smile & eye contact Uniform And Grooming Body Language"],
+      row["Smile & eye contact"],
+      row["Uniform And Grooming"],
+      row["Body Language"],
       row["Staff Behavior"]
     ].map(Number).filter(v => !isNaN(v));
 
