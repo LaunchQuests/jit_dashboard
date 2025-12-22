@@ -107,18 +107,7 @@ let liveSheetData = [];
 const SHEET_API_URL =
   "https://script.google.com/macros/s/AKfycbyIqF1aD9SI_jlCoJ3GN-6noBgJosq1Mh4z1t720eyDhuczwKdLVwc9x1OdfefBoFHy0w/exec";
 
-async function fetchSheetData() {
-  try {
-    const res = await fetch(SHEET_API_URL);
-    const json = await res.json();
-
-    if (!json.success) {
-      console.error("Sheet API error", json);
-      return;
-    }
-
-    liveSheetData = json.data || [];
-    function getValue(row, key) {
+      function getValue(row, key) {
       if (!row) return null;
 
       const normalizedKey = key.replace(/\s+/g, ' ').trim();
@@ -140,6 +129,17 @@ async function fetchSheetData() {
       return NaN;
     }
 
+async function fetchSheetData() {
+  try {
+    const res = await fetch(SHEET_API_URL);
+    const json = await res.json();
+
+    if (!json.success) {
+      console.error("Sheet API error", json);
+      return;
+    }
+
+    liveSheetData = json.data || [];
     transformSheetData(); 
     render();
   } catch (err) {
