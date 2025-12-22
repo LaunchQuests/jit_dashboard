@@ -105,9 +105,20 @@ let mockData = {
 let liveSheetData = [];
 
 const SHEET_API_URL =
-  "https://script.google.com/macros/s/AKfycbxXGIkmoUBRov9aNkcgrsed-cl81_Qoug0lruw1Jf4-/dev";
+  "https://script.google.com/macros/s/AKfycbyIqF1aD9SI_jlCoJ3GN-6noBgJosq1Mh4z1t720eyDhuczwKdLVwc9x1OdfefBoFHy0w/exec";
 
-      function getValue(row, key) {
+async function fetchSheetData() {
+  try {
+    const res = await fetch(SHEET_API_URL);
+    const json = await res.json();
+
+    if (!json.success) {
+      console.error("Sheet API error", json);
+      return;
+    }
+
+    liveSheetData = json.data || [];
+    function getValue(row, key) {
       if (!row) return null;
 
       const normalizedKey = key.replace(/\s+/g, ' ').trim();
@@ -129,17 +140,6 @@ const SHEET_API_URL =
       return NaN;
     }
 
-async function fetchSheetData() {
-  try {
-    const res = await fetch(SHEET_API_URL);
-    const json = await res.json();
-
-    if (!json.success) {
-      console.error("Sheet API error", json);
-      return;
-    }
-
-    liveSheetData = json.data || [];
     transformSheetData(); 
     render();
   } catch (err) {
@@ -236,12 +236,12 @@ function transformSheetData() {
       knowledge,
 
       comments: `
-        What impressed:
-        ${row["What impressed you most?"] || "-"}
+What impressed:
+${row["What impressed you most?"] || "-"}
 
-      Training focus:
-        ${row["Training Focus for this store:"] || "-"}
-        `.trim()
+Training focus:
+${row["Training Focus for this store:"] || "-"}
+      `.trim()
     });
   });
 
