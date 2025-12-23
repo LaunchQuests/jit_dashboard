@@ -1,10 +1,11 @@
 export const state = {
-  currentPage: "login",
-  selectedCity: null,
-  selectedStore: null,
-  selectedAudit: null,
   isLoggedIn: false,
   currentUser: null,
+  currentPage: "login", // login | dashboard | store | audit
+  selectedCity: "bangalore",
+  selectedStore: null,
+  selectedAudit: null,
+
   data: {
     cities: [],
     stores: []
